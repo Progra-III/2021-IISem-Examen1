@@ -17,46 +17,6 @@ public class CinemaController {
     public CinemaController() {
 
         this.cinemaWindow = new CinemaWindow();
-
-        CinemaController.ButtonListener action = new CinemaController.ButtonListener();
-        this.cinemaWindow.addListener(action);
-
         this.cinemaWindow.setVisible(true);
-    }
-
-    private class ButtonListener implements ActionListener {
-
-        private ButtonListener() {
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            int valor = Integer.parseInt(e.getActionCommand());
-            switch (valor) {
-                case 1:
-                    //ADD
-
-                    break;
-                case 2:
-                    //EXIT
-                    PrincipalController principalController = new PrincipalController();
-                    cinemaWindow.dispose();
-                    break;
-
-                case 3:
-                    //LIST
-
-                    break;
-
-                case 4:
-                    //SEARCH
-
-                    break;
-
-                case 5:
-                    //UPDATE
-
-                    break;
-            }
-        }
     }
 }

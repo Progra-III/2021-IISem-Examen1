@@ -1,7 +1,11 @@
 package view;
 
+import controller.PrincipalController;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ActorWindow extends JFrame{
@@ -31,6 +35,9 @@ public class ActorWindow extends JFrame{
         setLocationRelativeTo(null);
         setButtons();
         createTable();
+
+        ButtonListener listener = new ButtonListener();
+        addListener(listener);
     }
 
     public String getTxtID() {
@@ -45,7 +52,7 @@ public class ActorWindow extends JFrame{
         return txtAwards.getText();
     }
 
-    public void addListener(ActionListener action){
+    public void addListener(ButtonListener action){
         btnAdd.addActionListener(action);
         btnExit.addActionListener(action);
         btnList.addActionListener(action);
@@ -80,5 +87,41 @@ public class ActorWindow extends JFrame{
     public void displayMessage(String message){
         JOptionPane.showMessageDialog(windowPanel, message);
     }
+
+    private class ButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int valor = Integer.parseInt(e.getActionCommand());
+            switch (valor) {
+                case 1:
+                    //ADD
+
+                    break;
+                case 2:
+                    //EXIT
+                    PrincipalController principalController = new PrincipalController();
+                    dispose();
+                    break;
+
+                case 3:
+                    //LIST
+
+                    break;
+
+                case 4:
+                    //SEARCH
+
+                    break;
+
+                case 5:
+                    //UPDATE
+
+                    break;
+            }
+        }
+    }
+
+
 
 }

@@ -1,7 +1,10 @@
 package view;
 
+import controller.PrincipalController;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CinemaWindow extends JFrame{
@@ -27,6 +30,8 @@ public class CinemaWindow extends JFrame{
         setLocationRelativeTo(null);
         setButtons();
         createTable();
+        ButtonListener listener = new ButtonListener();
+        addListener(listener);
     }
 
     public String getTxtId() {
@@ -45,7 +50,7 @@ public class CinemaWindow extends JFrame{
         return (String) comboActor.getSelectedItem();
     }
 
-    public void addListener(ActionListener action){
+    public void addListener(ButtonListener action){
         btnAdd.addActionListener(action);
         btnExit.addActionListener(action);
         btnList.addActionListener(action);
@@ -80,5 +85,42 @@ public class CinemaWindow extends JFrame{
     public void displayMessage(String message){
         JOptionPane.showMessageDialog(windowPanel, message);
     }
+
+    private class ButtonListener implements ActionListener {
+
+        private ButtonListener() {
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            int valor = Integer.parseInt(e.getActionCommand());
+            switch (valor) {
+                case 1:
+                    //ADD
+
+                    break;
+                case 2:
+                    //EXIT
+                    PrincipalController principalController = new PrincipalController();
+                    dispose();
+                    break;
+
+                case 3:
+                    //LIST
+
+                    break;
+
+                case 4:
+                    //SEARCH
+
+                    break;
+
+                case 5:
+                    //UPDATE
+
+                    break;
+            }
+        }
+    }
+
 
 }
