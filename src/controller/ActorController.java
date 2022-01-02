@@ -21,4 +21,15 @@ public class ActorController {
     }
 
 
+
+    public static ActorController getInstance(){
+
+        if(instance == null){
+            instance = new ActorController();
+        }
+        return instance;
+    }
+
+    private static ActorController instance;
+
 }
