@@ -18,9 +18,27 @@ public class Cinema {
     private List<Movie> movies;
 
 
+    public List<Actor> getActors() {
+        return actors;
+    }
 
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
 
+    public List<Director> getDirectors() {
+        return directors;
+    }
 
+    public void setDirectors(List<Director> directors) {
+        this.directors = directors;
+    }
 
+    public List<Movie> getMovies() {
+        return movies;
+    }
 
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

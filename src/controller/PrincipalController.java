@@ -1,5 +1,6 @@
 package controller;
 
+import model.Cinema;
 import view.*;
 
 import java.awt.*;
@@ -9,14 +10,21 @@ import java.awt.event.ActionListener;
 public class PrincipalController {
 
     //-------------------------------
+    private Cinema cinema;
 
-    private PrincipalWindow principalWindow;
+
     //-------------------------------
 
     public PrincipalController() {
-        this.principalWindow = new PrincipalWindow();
+        this.cinema = new Cinema();
+    }
 
-        this.principalWindow.setVisible(true);
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
     }
 
     public static PrincipalController getInstance(){

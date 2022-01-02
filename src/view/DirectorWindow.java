@@ -35,8 +35,20 @@ public class DirectorWindow extends JFrame{
         setButtons();
         createTable();
 
-        ButtonListener listener = new ButtonListener();
-        addListener(listener);
+        AddButtonListener addButtonListener = new AddButtonListener();
+        btnAdd.addActionListener(addButtonListener);
+
+        SearchButtonListener searchButtonListener = new SearchButtonListener();
+        btnSearch.addActionListener(searchButtonListener);
+
+        ListButtonListener listButtonListener = new ListButtonListener();
+        btnList.addActionListener(listButtonListener);
+
+        UpdateButtonListener updateButtonListener = new UpdateButtonListener();
+        btnUpdate.addActionListener(updateButtonListener);
+
+        ExitButtonListener exitButtonListener = new ExitButtonListener();
+        btnExit.addActionListener(exitButtonListener);
     }
 
     public String getTxtID() {
@@ -51,13 +63,13 @@ public class DirectorWindow extends JFrame{
         return txtAwards.getText();
     }
 
-    public void addListener(ButtonListener action){
+    /*public void addListener(ButtonListener action){
         btnAdd.addActionListener(action);
         btnExit.addActionListener(action);
         btnList.addActionListener(action);
         btnSearch.addActionListener(action);
         btnUpdate.addActionListener(action);
-    }
+    }*/
 
     public void setButtons() {
         btnAdd.setActionCommand("1");
@@ -87,42 +99,43 @@ public class DirectorWindow extends JFrame{
         JOptionPane.showMessageDialog(windowPanel, message);
     }
 
-    private class ButtonListener implements ActionListener {
+    private class AddButtonListener implements ActionListener{
 
-        private ButtonListener() {
-        }
-
+        @Override
         public void actionPerformed(ActionEvent e) {
-            int valor = Integer.parseInt(e.getActionCommand());
-            switch (valor) {
-                case 1:
-                    //ADD
 
-                    break;
-                case 2:
-                    //EXIT
-                    PrincipalController principalController = new PrincipalController();
-                    dispose();
-                    break;
-
-                case 3:
-                    //LIST
-
-                    break;
-
-                case 4:
-                    //SEARCH
-
-                    break;
-
-                case 5:
-                    //UPDATE
-
-                    break;
-            }
         }
     }
 
+    private class SearchButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
+        }
+    }
+
+    private class ListButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
+
+    private class UpdateButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class ExitButtonListener implements ActionListener{
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PrincipalWindow principalWindow = new PrincipalWindow();
+            dispose();
+        }
+    }
 
 }

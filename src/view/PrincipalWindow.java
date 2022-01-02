@@ -1,13 +1,14 @@
 package view;
 
 import controller.ActorController;
-import controller.CinemaController;
+import controller.MoviesController;
 import controller.DirectorController;
 import controller.PrincipalController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.spec.InvalidParameterSpecException;
 
 public class PrincipalWindow extends JFrame{
 
@@ -16,7 +17,11 @@ public class PrincipalWindow extends JFrame{
     private JButton btnActor;
     private JPanel windowPanel;
 
+    private static PrincipalController controller;
+
     public PrincipalWindow(){
+        controller = PrincipalController.getInstance();
+
         setContentPane(windowPanel);
         setTitle("Menu Principal");
         setSize(900,500);
@@ -29,6 +34,7 @@ public class PrincipalWindow extends JFrame{
         btnMovie.addActionListener(listener);
         btnDirector.addActionListener(listener);
         btnActor.addActionListener(listener);
+        setVisible(true);
     }
     public void setButtons() {
         btnActor.setActionCommand("1");
@@ -38,36 +44,49 @@ public class PrincipalWindow extends JFrame{
     public void displayErrorMessage(String errorMessage){
         JOptionPane.showMessageDialog(windowPanel, errorMessage, " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
     }
+
+
+    public void setVisible(Boolean visible){
+        if(visible == true){
+            setVisible(true);
+        }else{
+            setVisible(false);
+        }
+    }
     public void displayMessage(String message){
         JOptionPane.showMessageDialog(windowPanel, message);
     }
     private class ButtonListener implements ActionListener {
-
-        private ButtonListener() {
-        }
         @Override
         public void actionPerformed(ActionEvent e) {
             int valor = Integer.parseInt(e.getActionCommand());
             switch (valor) {
                 case 1:
                     //ACTOR
-                    ActorController actorController = new ActorController();
+                    ActorWindow actorWindow = new ActorWindow();
+                    actorWindow.setVisible(true);
                     dispose();
 
                     break;
                 case 2:
                     //DIRECTOR
-                    DirectorController directorController = new DirectorController();
+                    DirectorWindow directorWindow = new DirectorWindow();
+                    directorWindow.setVisible(true);
                     dispose();
+
                     break;
 
                 case 3:
                     //PELÍCULA
-                    CinemaController cinemaController = new CinemaController();
+                    MoviesWindow moviesWindow = new MoviesWindow();
+                    moviesWindow.setVisible(true);
                     dispose();
+
                     break;
             }
+
         }
+
 
     }
 }

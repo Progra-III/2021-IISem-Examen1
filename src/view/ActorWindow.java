@@ -39,12 +39,22 @@ public class ActorWindow extends JFrame{
         setButtons();
         createTable();
 
-        ButtonAddListener listener = new ButtonAddListener();
-        btnAdd.addActionListener(listener);
+        AddButtonListener addListener = new AddButtonListener();
+        btnAdd.addActionListener(addListener);
 
+        SearchButtonListener searchListener = new SearchButtonListener();
+        btnSearch.addActionListener(searchListener);
 
+        ListButtonListener listButtonListener = new ListButtonListener();
+        btnList.addActionListener(listButtonListener);
 
+        UpdateButtonListener updateButtonListener = new UpdateButtonListener();
+        btnUpdate.addActionListener(updateButtonListener);
+
+        ExitButtonListener exitListener = new ExitButtonListener();
+        btnExit.addActionListener(exitListener);
     }
+
 
     public String getTxtID() {
         return txtID.getText();
@@ -58,13 +68,6 @@ public class ActorWindow extends JFrame{
         return txtAwards.getText();
     }
 
-   /* public void addListener(ButtonListener action){
-        btnAdd.addActionListener(action);
-        btnExit.addActionListener(action);
-        btnList.addActionListener(action);
-        btnSearch.addActionListener(action);
-        btnUpdate.addActionListener(action);
-    }*/
 
     public void setButtons() {
         btnAdd.setActionCommand("1");
@@ -94,7 +97,7 @@ public class ActorWindow extends JFrame{
         JOptionPane.showMessageDialog(windowPanel, message);
     }
 
-    private class ButtonAddListener implements ActionListener {
+    private class AddButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -104,6 +107,35 @@ public class ActorWindow extends JFrame{
         }
     }
 
+    private class SearchButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
+        }
+    }
+
+    private class ListButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class UpdateButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class ExitButtonListener implements ActionListener{
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PrincipalWindow principalWindow = new PrincipalWindow();
+            dispose();
+        }
+    }
 
 }

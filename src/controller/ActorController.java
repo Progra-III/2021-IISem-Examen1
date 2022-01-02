@@ -1,5 +1,7 @@
 package controller;
 
+import model.Actor;
+import model.Cinema;
 import utilities.Utilities;
 import view.ActorWindow;
 import view.PrincipalWindow;
@@ -9,17 +11,19 @@ import java.awt.event.ActionListener;
 
 public class ActorController {
     //-------------------------------
-    private ActorWindow actorWindow;
     private Utilities utilities;
 
     //-------------------------------
 
-    public ActorController() {
-
-        this.actorWindow = new ActorWindow();
-        this.actorWindow.setVisible(true);
+    public Boolean addActor(Actor actor){
+        if(actor == null){
+            return false;
+        }else{
+            Cinema cinema = PrincipalController.getInstance().getCinema();
+            cinema.getActors().add(actor);
+            return true;
+        }
     }
-
 
 
     public static ActorController getInstance(){

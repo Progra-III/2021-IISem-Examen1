@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CinemaWindow extends JFrame{
+public class MoviesWindow extends JFrame{
     private JPanel windowPanel;
     private JTextField txtId;
     private JTable dataTable;
@@ -20,7 +20,7 @@ public class CinemaWindow extends JFrame{
     private JButton btnUpdate;
     private JButton btnExit;
 
-    public CinemaWindow(){
+    public MoviesWindow(){
 
         setContentPane(windowPanel);
         setTitle("Administrador de Peliculas");
@@ -30,8 +30,23 @@ public class CinemaWindow extends JFrame{
         setLocationRelativeTo(null);
         setButtons();
         createTable();
-        ButtonListener listener = new ButtonListener();
-        addListener(listener);
+
+        AddButtonListener addListener = new AddButtonListener();
+        btnAdd.addActionListener(addListener);
+
+        SearchButtonListener searchListener = new SearchButtonListener();
+        btnSearch.addActionListener(searchListener);
+
+        ListButtonListener listButtonListener = new ListButtonListener();
+        btnList.addActionListener(listButtonListener);
+
+        UpdateButtonListener updateButtonListener = new UpdateButtonListener();
+        btnUpdate.addActionListener(updateButtonListener);
+
+        ExitButtonListener exitListener = new ExitButtonListener();
+        btnExit.addActionListener(exitListener);
+
+
     }
 
     public String getTxtId() {
@@ -48,14 +63,6 @@ public class CinemaWindow extends JFrame{
 
     public String getComboActor() {
         return (String) comboActor.getSelectedItem();
-    }
-
-    public void addListener(ButtonListener action){
-        btnAdd.addActionListener(action);
-        btnExit.addActionListener(action);
-        btnList.addActionListener(action);
-        btnSearch.addActionListener(action);
-        btnUpdate.addActionListener(action);
     }
 
     public void setButtons() {
@@ -86,39 +93,44 @@ public class CinemaWindow extends JFrame{
         JOptionPane.showMessageDialog(windowPanel, message);
     }
 
-    private class ButtonListener implements ActionListener {
+    private class AddButtonListener implements ActionListener {
 
-        private ButtonListener() {
-        }
-
+        @Override
         public void actionPerformed(ActionEvent e) {
-            int valor = Integer.parseInt(e.getActionCommand());
-            switch (valor) {
-                case 1:
-                    //ADD
 
-                    break;
-                case 2:
-                    //EXIT
-                    PrincipalController principalController = new PrincipalController();
-                    dispose();
-                    break;
 
-                case 3:
-                    //LIST
 
-                    break;
+        }
+    }
 
-                case 4:
-                    //SEARCH
+    private class SearchButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
-                    break;
+        }
+    }
 
-                case 5:
-                    //UPDATE
+    private class ListButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
-                    break;
-            }
+        }
+    }
+
+    private class UpdateButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class ExitButtonListener implements ActionListener{
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PrincipalWindow principalWindow = new PrincipalWindow();
+            dispose();
         }
     }
 
