@@ -2,12 +2,15 @@ package view;
 
 import controller.ActorController;
 import controller.PrincipalController;
+import model.Actor;
+import utilities.Utilities;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActorWindow extends JFrame{
 
@@ -26,6 +29,8 @@ public class ActorWindow extends JFrame{
     private JButton btnExit;
     private JPanel windowPanel;
 
+    Utilities utilities = new Utilities();
+
     //-------------------------------
 
     public ActorWindow(){
@@ -36,7 +41,6 @@ public class ActorWindow extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-        setButtons();
         createTable();
 
         AddButtonListener addListener = new AddButtonListener();
@@ -68,20 +72,10 @@ public class ActorWindow extends JFrame{
         return txtAwards.getText();
     }
 
-
-    public void setButtons() {
-        btnAdd.setActionCommand("1");
-        btnExit.setActionCommand("2");
-        btnList.setActionCommand("3");
-        btnSearch.setActionCommand("4");
-        btnUpdate.setActionCommand("5");
-    }
-
     public void createTable(){
         Object data[][] = {
+                //Example
                 {1,"Matt Damon", 10},
-                {},
-                {}
         };
         dataTable.setModel(new DefaultTableModel(
                 data,
@@ -102,8 +96,34 @@ public class ActorWindow extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            if(utilities.isNumeric(txtID.getText())) {
+                if (utilities.isNumeric(txtAwards.getText())) {
+
+                    String id = txtID.getText();
+                    int id_numeric = Integer.parseInt(id);
+
+                    String name = txtName.getText();
+
+                    String awards = txtAwards.getText();
+                    int awards_numeric = Integer.parseInt(awards);
 
 
+                    Actor actor = new Actor(id_numeric, name, awards_numeric);
+                    String actorString[] = {id, name, awards};
+
+                    if (ActorController.getInstance().addActor(actor)) {
+
+                        DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+                        model.addRow(actorString);
+                        dataTable.setModel(model);
+
+                        displayMessage("Actor agregado con exito.");
+
+                    } else {
+                        displayErrorMessage("Actor invalido.");
+                    }
+                }
+            }
         }
     }
 
@@ -111,12 +131,31 @@ public class ActorWindow extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
 
+
+
+            if(utilities.isNumeric(txtID.getText())){
+
+                String id = txtID.getText();
+                int id_numeric = Integer.parseInt(id);
+
+                if(ActorController.getInstance().searchActor(id_numeric) != null){
+
+                    Actor actor = ActorController.getInstance().searchActor(id_numeric);
+
+                    displayMessage("ID: " + actor.getId() + "\n" + "Nombre: "+actor.getName() + "\n" + "Cantidad de premios: " + actor.getAwards());
+
+
+                }
+
+            }
+
         }
     }
 
     private class ListButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+
 
         }
     }

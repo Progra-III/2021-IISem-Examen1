@@ -6,6 +6,7 @@ import utilities.Utilities;
 import view.ActorWindow;
 import view.PrincipalWindow;
 
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,6 +16,7 @@ public class ActorController {
 
     //-------------------------------
 
+    //Will add the received Actor
     public Boolean addActor(Actor actor){
         if(actor == null){
             return false;
@@ -23,6 +25,18 @@ public class ActorController {
             cinema.getActors().add(actor);
             return true;
         }
+    }
+
+   public Actor searchActor(int id){
+
+        Cinema cinema = PrincipalController.getInstance().getCinema();
+
+        for(int i= 0; i < cinema.getActors().size(); i++) {
+            if(id == cinema.getActors().get(i).getId()){
+                return cinema.getActors().get(i);
+            }
+        }
+        return null;
     }
 
 
