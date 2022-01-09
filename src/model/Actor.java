@@ -2,7 +2,7 @@ package model;
 
 public class Actor {
 
-    public Actor(){
+    public Actor() {
         this.id = 0;
         this.name = "";
         this.awards = 0;
@@ -41,6 +41,4 @@ public class Actor {
     private int id;
     private String name;
     private int awards;
-
-
 }

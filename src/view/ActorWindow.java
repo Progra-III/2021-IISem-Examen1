@@ -202,8 +202,6 @@ public class ActorWindow extends JFrame {
     }
 
     private class ExitButtonListener implements ActionListener {
-
-
         @Override
         public void actionPerformed(ActionEvent e) {
             PrincipalWindow principalWindow = new PrincipalWindow();

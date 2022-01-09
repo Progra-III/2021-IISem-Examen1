@@ -5,13 +5,6 @@ import java.util.ArrayList;
 
 public class Movie {
 
-
-    private int id;
-    private String name;
-    Director director;
-    List<Actor> actors;
-
-
     public Movie(int id, String name, Director director, List<Actor> actors) {
         this.id = id;
         this.name = name;
@@ -50,4 +43,9 @@ public class Movie {
     public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
+
+    private int id;
+    private String name;
+    Director director;
+    List<Actor> actors;
 }

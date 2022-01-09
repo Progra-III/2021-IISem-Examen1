@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DirectorWindow extends JFrame{
+public class DirectorWindow extends JFrame {
 
     //-------------------------------
     private JTextField txtID;
@@ -24,15 +24,14 @@ public class DirectorWindow extends JFrame{
 
     //-------------------------------
 
-    public DirectorWindow(){
+    public DirectorWindow() {
 
         setContentPane(windowPanel);
         setTitle("Administrador de Directores");
-        setSize(900,500);
+        setSize(900, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-        setButtons();
         createTable();
 
         AddButtonListener addButtonListener = new AddButtonListener();
@@ -51,55 +50,27 @@ public class DirectorWindow extends JFrame{
         btnExit.addActionListener(exitButtonListener);
     }
 
-    public String getTxtID() {
-        return txtID.getText();
-    }
-
-    public String getTxtName() {
-        return txtName.getText();
-    }
-
-    public String getTxtAwards() {
-        return txtAwards.getText();
-    }
-
-    /*public void addListener(ButtonListener action){
-        btnAdd.addActionListener(action);
-        btnExit.addActionListener(action);
-        btnList.addActionListener(action);
-        btnSearch.addActionListener(action);
-        btnUpdate.addActionListener(action);
-    }*/
-
-    public void setButtons() {
-        btnAdd.setActionCommand("1");
-        btnExit.setActionCommand("2");
-        btnList.setActionCommand("3");
-        btnSearch.setActionCommand("4");
-        btnUpdate.setActionCommand("5");
-    }
-
-    public void createTable(){
+    public void createTable() {
         Object data[][] = {
-                {1,"Matt Damon", 10},
+                {1, "Matt Damon", 10},
                 {},
                 {}
         };
         dataTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"Id","Nombre","Premios"}
+                new String[]{"Id", "Nombre", "Premios"}
         ));
     }
 
-    public void displayErrorMessage(String errorMessage){
+    public void displayErrorMessage(String errorMessage) {
         JOptionPane.showMessageDialog(windowPanel, errorMessage, " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void displayMessage(String message){
+    public void displayMessage(String message) {
         JOptionPane.showMessageDialog(windowPanel, message);
     }
 
-    private class AddButtonListener implements ActionListener{
+    private class AddButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -107,20 +78,20 @@ public class DirectorWindow extends JFrame{
         }
     }
 
-    private class SearchButtonListener implements ActionListener{
+    private class SearchButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
         }
     }
 
-    private class ListButtonListener implements ActionListener{
+    private class ListButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
         }
     }
 
-    private class UpdateButtonListener implements ActionListener{
+    private class UpdateButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -128,7 +99,7 @@ public class DirectorWindow extends JFrame{
         }
     }
 
-    private class ExitButtonListener implements ActionListener{
+    private class ExitButtonListener implements ActionListener {
 
 
         @Override

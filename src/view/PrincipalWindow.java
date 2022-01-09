@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.spec.InvalidParameterSpecException;
 
-public class PrincipalWindow extends JFrame{
+public class PrincipalWindow extends JFrame {
 
     private JButton btnMovie;
     private JButton btnDirector;
@@ -19,12 +19,12 @@ public class PrincipalWindow extends JFrame{
 
     private static PrincipalController controller;
 
-    public PrincipalWindow(){
+    public PrincipalWindow() {
         controller = PrincipalController.getInstance();
 
         setContentPane(windowPanel);
         setTitle("Menu Principal");
-        setSize(900,500);
+        setSize(900, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -36,26 +36,13 @@ public class PrincipalWindow extends JFrame{
         btnActor.addActionListener(listener);
         setVisible(true);
     }
+
     public void setButtons() {
         btnActor.setActionCommand("1");
         btnDirector.setActionCommand("2");
         btnMovie.setActionCommand("3");
     }
-    public void displayErrorMessage(String errorMessage){
-        JOptionPane.showMessageDialog(windowPanel, errorMessage, " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
-    }
 
-
-    public void setVisible(Boolean visible){
-        if(visible == true){
-            setVisible(true);
-        }else{
-            setVisible(false);
-        }
-    }
-    public void displayMessage(String message){
-        JOptionPane.showMessageDialog(windowPanel, message);
-    }
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
