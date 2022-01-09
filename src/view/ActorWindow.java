@@ -74,8 +74,7 @@ public class ActorWindow extends JFrame{
 
     public void createTable(){
         Object data[][] = {
-                //Example
-                {1,"Matt Damon", 10},
+
         };
         dataTable.setModel(new DefaultTableModel(
                 data,
@@ -86,7 +85,7 @@ public class ActorWindow extends JFrame{
     public void displayErrorMessage(String errorMessage){
         JOptionPane.showMessageDialog(windowPanel, errorMessage, " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
     }
-
+<
     public void displayMessage(String message){
         JOptionPane.showMessageDialog(windowPanel, message);
     }
@@ -112,6 +111,7 @@ public class ActorWindow extends JFrame{
                     String actorString[] = {id, name, awards};
 
                     if (ActorController.getInstance().addActor(actor)) {
+
 
                         DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
                         model.addRow(actorString);
@@ -155,8 +155,46 @@ public class ActorWindow extends JFrame{
     private class ListButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+                //First of all, will verify that we have
+                if (utilities.isNumeric((txtID.getText()))) {
+
+                    List<Actor> actorsAux = (ArrayList) PrincipalController.getInstance().getCinema().getActors();
+
+                    String id = txtID.getText();
+                    //The next line will save the current table model
+
+                    //Proceed to edit the current table model
+                    DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+                    for (int i = 0; i < actorsAux.size(); i++) {
+                        model.removeRow(0);
+                    }
 
 
+                    for (int i = 0; i < actorsAux.size(); i++) {
+
+                        String str_id = String.valueOf(actorsAux.get(i).getId());
+
+                        if (str_id.startsWith(id)) {
+                            int actor_id = actorsAux.get(i).getId();
+                            String actor_name = actorsAux.get(i).getName();
+                            int actor_awards = actorsAux.get(i).getAwards();
+
+                            String actorToAdd[] = {String.valueOf(actor_id), actor_name, String.valueOf(actor_awards)};
+
+                            model.addRow(actorToAdd);
+                        }
+                    }
+
+                    //Finally the data model edited
+
+                    if (model.getRowCount() < 1) {
+                        displayErrorMessage("No hay coincidencias para listar.");
+                        //dataTable.setModel(model);
+                    } else {
+                        dataTable.setModel(model);
+                    }
+                }
         }
     }
 
