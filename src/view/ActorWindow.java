@@ -9,10 +9,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ActorWindow extends JFrame{
+public class ActorWindow extends JFrame {
 
     //-------------------------------
     private JTextField txtID;
@@ -33,11 +32,11 @@ public class ActorWindow extends JFrame{
 
     //-------------------------------
 
-    public ActorWindow(){
+    public ActorWindow() {
 
         setContentPane(windowPanel);
         setTitle("Administrador Actores");
-        setSize(900,500);
+        setSize(900, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -59,34 +58,18 @@ public class ActorWindow extends JFrame{
         btnExit.addActionListener(exitListener);
     }
 
-
-    public String getTxtID() {
-        return txtID.getText();
-    }
-
-    public String getTxtName() {
-        return txtName.getText();
-    }
-
-    public String getTxtAwards() {
-        return txtAwards.getText();
-    }
-
-    public void createTable(){
-        Object data[][] = {
-
-        };
+    public void createTable() {
         dataTable.setModel(new DefaultTableModel(
-                data,
-                new String[]{"Id","Nombre","Premios"}
+                null,
+                new String[]{"Id", "Nombre", "Premios"}
         ));
     }
 
-    public void displayErrorMessage(String errorMessage){
+    public void displayErrorMessage(String errorMessage) {
         JOptionPane.showMessageDialog(windowPanel, errorMessage, " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
     }
-<
-    public void displayMessage(String message){
+
+    public void displayMessage(String message) {
         JOptionPane.showMessageDialog(windowPanel, message);
     }
 
@@ -94,10 +77,11 @@ public class ActorWindow extends JFrame{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            if(utilities.isNumeric(txtID.getText())) {
+            //Verify that input is numeric
+            if (utilities.isNumeric(txtID.getText())) {
                 if (utilities.isNumeric(txtAwards.getText())) {
 
+                    //Convert data to valid values
                     String id = txtID.getText();
                     int id_numeric = Integer.parseInt(id);
 
@@ -106,106 +90,118 @@ public class ActorWindow extends JFrame{
                     String awards = txtAwards.getText();
                     int awards_numeric = Integer.parseInt(awards);
 
-
+                    //Create a new Actor in order to add it to the Actors list and the JTable
                     Actor actor = new Actor(id_numeric, name, awards_numeric);
-                    String actorString[] = {id, name, awards};
-
-                    if (ActorController.getInstance().addActor(actor)) {
+                    String[] actorString = {id, name, awards};
 
 
-                        DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
-                        model.addRow(actorString);
-                        dataTable.setModel(model);
+                    //Verify if an Actor with this ID already exists
+                    if (ActorController.getInstance().searchActor(id_numeric) != null) {
+                        //Add the actor to the list and to the JTable
+                        if (ActorController.getInstance().addActor(actor)) {
+                            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+                            model.addRow(actorString);
+                            dataTable.setModel(model);
 
-                        displayMessage("Actor agregado con exito.");
+                            displayMessage("Actor agregado con exito.");
 
+                        } else {
+                            //Error message if the actor is invalid
+                            displayErrorMessage("Actor invalido.");
+                        }
                     } else {
-                        displayErrorMessage("Actor invalido.");
+                        displayErrorMessage("Ya existe un actor con ese ID. Favor digitar uno distinto");
                     }
                 }
             }
         }
     }
 
-    private class SearchButtonListener implements ActionListener{
+    private class SearchButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            //Verify that input is numeric
+            if (utilities.isNumeric(txtID.getText())) {
 
-
-            if(utilities.isNumeric(txtID.getText())){
-
+                //Convert data to valid values
                 String id = txtID.getText();
                 int id_numeric = Integer.parseInt(id);
 
-                if(ActorController.getInstance().searchActor(id_numeric) != null){
+                //Search for the Actor
+                if (ActorController.getInstance().searchActor(id_numeric) != null) {
 
+                    //Create an auxiliar actor that will be used to show its information
                     Actor actor = ActorController.getInstance().searchActor(id_numeric);
+                    displayMessage("ID: " + actor.getId() + "\n" + "Nombre: " + actor.getName() + "\n" + "Cantidad de premios: " + actor.getAwards());
 
-                    displayMessage("ID: " + actor.getId() + "\n" + "Nombre: "+actor.getName() + "\n" + "Cantidad de premios: " + actor.getAwards());
 
-
+                } else {
+                    displayErrorMessage("Sin coincidencia.");
                 }
-
+            } else {
+                displayErrorMessage("No hay valores numericos en ID o está vacío.");
             }
 
         }
     }
 
-    private class ListButtonListener implements ActionListener{
+    private class ListButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-                //First of all, will verify that we have
-                if (utilities.isNumeric((txtID.getText()))) {
+            //First of all, will verify that we have
+            if (utilities.isNumeric((txtID.getText()))) {
 
-                    List<Actor> actorsAux = (ArrayList) PrincipalController.getInstance().getCinema().getActors();
+                List<Actor> actorsAux = PrincipalController.getInstance().getCinema().getActors();
 
-                    String id = txtID.getText();
-                    //The next line will save the current table model
+                String id = txtID.getText();
+                //The next line will save the current table model
 
-                    //Proceed to edit the current table model
-                    DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+                //Proceed to edit the current table model deleting all the current rows
+                DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+                for (int i = 0; i < actorsAux.size(); i++) {
+                    model.removeRow(0);
+                }
 
-                    for (int i = 0; i < actorsAux.size(); i++) {
-                        model.removeRow(0);
-                    }
+                //Search for any coincidence in the Actors List
 
 
-                    for (int i = 0; i < actorsAux.size(); i++) {
+                for (Actor aux : actorsAux) {
+                    String str_id = String.valueOf(aux.getId());
 
-                        String str_id = String.valueOf(actorsAux.get(i).getId());
+                    //Verify if the current Actor id starts with the provided id
+                    if (str_id.startsWith(id)) {
+                        int actor_id = aux.getId();
+                        String actor_name = aux.getName();
+                        int actor_awards = aux.getAwards();
 
-                        if (str_id.startsWith(id)) {
-                            int actor_id = actorsAux.get(i).getId();
-                            String actor_name = actorsAux.get(i).getName();
-                            int actor_awards = actorsAux.get(i).getAwards();
+                        String[] actorToAdd = {String.valueOf(actor_id), actor_name, String.valueOf(actor_awards)};
 
-                            String actorToAdd[] = {String.valueOf(actor_id), actor_name, String.valueOf(actor_awards)};
-
-                            model.addRow(actorToAdd);
-                        }
-                    }
-
-                    //Finally the data model edited
-
-                    if (model.getRowCount() < 1) {
-                        displayErrorMessage("No hay coincidencias para listar.");
-                        //dataTable.setModel(model);
-                    } else {
-                        dataTable.setModel(model);
+                        model.addRow(actorToAdd);
                     }
                 }
+
+                //If there is any coincidence an error message will appear
+                if (model.getRowCount() < 1) {
+                    displayErrorMessage("No hay coincidencias para listar.");
+                }
+                //Finally the data model is edited
+                else {
+
+                    dataTable.setModel(model);
+                }
+            }
         }
     }
 
-    private class UpdateButtonListener implements ActionListener{
+    private class UpdateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
         }
     }
 
-    private class ExitButtonListener implements ActionListener{
+    private class ExitButtonListener implements ActionListener {
 
 
         @Override

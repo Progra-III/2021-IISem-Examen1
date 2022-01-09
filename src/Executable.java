@@ -1,5 +1,3 @@
-package executable;
-
 import controller.PrincipalController;
 import view.PrincipalWindow;
 
