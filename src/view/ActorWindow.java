@@ -6,9 +6,14 @@ import model.Actor;
 import utilities.Utilities;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 import java.util.List;
 
 public class ActorWindow extends JFrame {
@@ -40,7 +45,14 @@ public class ActorWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        init();
+    }
+
+    public void init() {
+
         createTable();
+
 
         AddButtonListener addListener = new AddButtonListener();
         btnAdd.addActionListener(addListener);
@@ -56,6 +68,7 @@ public class ActorWindow extends JFrame {
 
         ExitButtonListener exitListener = new ExitButtonListener();
         btnExit.addActionListener(exitListener);
+
     }
 
     public void createTable() {
@@ -63,6 +76,8 @@ public class ActorWindow extends JFrame {
                 null,
                 new String[]{"Id", "Nombre", "Premios"}
         ));
+
+
     }
 
     public void displayErrorMessage(String errorMessage) {
@@ -96,7 +111,7 @@ public class ActorWindow extends JFrame {
 
 
                     //Verify if an Actor with this ID already exists
-                    if (ActorController.getInstance().searchActor(id_numeric) != null) {
+                    if (ActorController.getInstance().searchActor(id_numeric) == null) {
                         //Add the actor to the list and to the JTable
                         if (ActorController.getInstance().addActor(actor)) {
                             DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
@@ -197,6 +212,39 @@ public class ActorWindow extends JFrame {
     private class UpdateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            //Verify
+            if (utilities.isNumeric((txtID.getText()))) {
+                String id = txtID.getText();
+                int id_numeric = Integer.parseInt(id);
+
+
+                if (ActorController.getInstance().searchActor(id_numeric) != null) {
+
+                    Actor actor = ActorController.getInstance().searchActor(id_numeric);
+                    int pos = ActorController.getInstance().getActorPos(id_numeric);
+
+                    DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+                    if (txtName.getText() != "") {
+                        model.setValueAt(txtName.getText(), pos, 1);
+                        dataTable.setModel(model);
+                    }
+                    if (utilities.isNumeric(txtAwards.getText())) {
+                        if (txtAwards.getText() != "") {
+                            model.setValueAt(txtAwards.getText(), pos, 2);
+                            dataTable.setModel(model);
+                        }
+                    } else {
+                        displayErrorMessage("Valor de premios invalido. Debe ser numerico.");
+                    }
+                } else {
+                    displayErrorMessage("Este id no coincide con ninguno de los existentes.");
+                }
+
+
+            }
+
 
         }
     }

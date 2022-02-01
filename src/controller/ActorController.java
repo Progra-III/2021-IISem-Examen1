@@ -17,22 +17,34 @@ public class ActorController {
     //-------------------------------
 
     //Will add the received Actor
-    public Boolean addActor(Actor actor){
-        if(actor == null){
+    public Boolean addActor(Actor actor) {
+        if (actor == null) {
             return false;
-        }else{
+        } else {
             Cinema cinema = PrincipalController.getInstance().getCinema();
             cinema.getActors().add(actor);
             return true;
         }
     }
 
-   public Actor searchActor(int id){
+    public int getActorPos(int id) {
 
         Cinema cinema = PrincipalController.getInstance().getCinema();
 
-        for(int i= 0; i < cinema.getActors().size(); i++) {
-            if(id == cinema.getActors().get(i).getId()){
+        for (int i = 0; i < cinema.getActors().size(); i++) {
+            if (id == cinema.getActors().get(i).getId()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Actor searchActor(int id) {
+
+        Cinema cinema = PrincipalController.getInstance().getCinema();
+
+        for (int i = 0; i < cinema.getActors().size(); i++) {
+            if (id == cinema.getActors().get(i).getId()) {
                 return cinema.getActors().get(i);
             }
         }
@@ -40,9 +52,9 @@ public class ActorController {
     }
 
 
-    public static ActorController getInstance(){
+    public static ActorController getInstance() {
 
-        if(instance == null){
+        if (instance == null) {
             instance = new ActorController();
         }
         return instance;
