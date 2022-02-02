@@ -65,10 +65,14 @@ public class PrincipalWindow extends JFrame {
 
                 case 3:
                     //PELÍCULA
-                    MoviesWindow moviesWindow = new MoviesWindow();
-                    moviesWindow.setVisible(true);
-                    dispose();
-
+                    if (!PrincipalController.getInstance().getCinema().getActors().isEmpty()
+                            && !PrincipalController.getInstance().getCinema().getDirectors().isEmpty()) {
+                        MoviesWindow moviesWindow = new MoviesWindow();
+                        moviesWindow.setVisible(true);
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(windowPanel, "Faltan datos de Actores o Directores.", " WARNING ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
             }
 

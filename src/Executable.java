@@ -1,4 +1,4 @@
-import controller.PrincipalController;
+
 import view.PrincipalWindow;
 
 public class Executable {

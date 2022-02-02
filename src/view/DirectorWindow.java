@@ -1,11 +1,9 @@
 package view;
 
-import controller.ActorController;
 import controller.DirectorController;
 import controller.PrincipalController;
 import model.Director;
 import utilities.Utilities;
-import model.Actor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
