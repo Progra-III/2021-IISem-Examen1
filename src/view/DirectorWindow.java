@@ -1,7 +1,9 @@
 package view;
 
 import controller.ActorController;
+import controller.DirectorController;
 import controller.PrincipalController;
+import model.Director;
 import utilities.Utilities;
 import model.Actor;
 
@@ -18,14 +20,13 @@ public class DirectorWindow extends JFrame {
     private JTextField txtName;
     private JTextField txtAwards;
     private JTable dataTable;
-    private JScrollPane scrollPane;
     private JButton btnAdd;
     private JButton btnSearch;
     private JButton btnList;
     private JButton btnUpdate;
     private JButton btnExit;
     private JPanel windowPanel;
-
+    private JScrollPane scrollPane;
     Utilities utilities = new Utilities();
 
     //-------------------------------
@@ -38,7 +39,13 @@ public class DirectorWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        init();
+    }
+
+    public void init() {
         createTable();
+        loadData();
 
         AddButtonListener addButtonListener = new AddButtonListener();
         btnAdd.addActionListener(addButtonListener);
@@ -61,6 +68,22 @@ public class DirectorWindow extends JFrame {
                 null,
                 new String[]{"Id", "Nombre", "Premios"}
         ));
+    }
+
+    public void loadData() {
+        if (!PrincipalController.getInstance().getCinema().getDirectors().isEmpty()) {
+            List<Director> directors = PrincipalController.getInstance().getCinema().getDirectors();
+            DefaultTableModel directorsModel = (DefaultTableModel) dataTable.getModel();
+
+            for (Director director : directors) {
+                String[] directorStr = {String.valueOf(director.getId()), director.getName(), String.valueOf(director.getAwards())};
+                directorsModel.addRow(directorStr);
+            }
+
+            dataTable.setModel(directorsModel);
+        } else {
+            System.out.println("Any data to load");
+        }
     }
 
     public void displayErrorMessage(String errorMessage) {
@@ -89,26 +112,25 @@ public class DirectorWindow extends JFrame {
                     int awards_numeric = Integer.parseInt(awards);
 
                     //Create a new Actor in order to add it to the Actors list and the JTable
-                    Actor actor = new Actor(id_numeric, name, awards_numeric);
-                    String[] actorString = {id, name, awards};
-
+                    Director director = new Director(id_numeric, name, awards_numeric);
+                    String[] directorStr = {id, name, awards};
 
                     //Verify if an Actor with this ID already exists
-                    if (ActorController.getInstance().searchActor(id_numeric) == null) {
+                    if (DirectorController.getInstance().searchDirector(id_numeric) == null) {
                         //Add the actor to the list and to the JTable
-                        if (ActorController.getInstance().addActor(actor)) {
+                        if (DirectorController.getInstance().addDirector(director)) {
                             DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
-                            model.addRow(actorString);
+                            model.addRow(directorStr);
                             dataTable.setModel(model);
 
-                            displayMessage("Actor agregado con exito.");
+                            displayMessage("Director agregado con exito.");
 
                         } else {
                             //Error message if the actor is invalid
-                            displayErrorMessage("Actor invalido.");
+                            displayErrorMessage("Director invalido.");
                         }
                     } else {
-                        displayErrorMessage("Ya existe un actor con ese ID. Favor digitar uno distinto");
+                        displayErrorMessage("Ya existe un director con ese ID. Favor digitar uno distinto");
                     }
                 }
             }
@@ -126,11 +148,11 @@ public class DirectorWindow extends JFrame {
                 int id_numeric = Integer.parseInt(id);
 
                 //Search for the Actor
-                if (ActorController.getInstance().searchActor(id_numeric) != null) {
+                if (DirectorController.getInstance().searchDirector(id_numeric) != null) {
 
                     //Create an auxiliar actor that will be used to show its information
-                    Actor actor = ActorController.getInstance().searchActor(id_numeric);
-                    displayMessage("ID: " + actor.getId() + "\n" + "Nombre: " + actor.getName() + "\n" + "Cantidad de premios: " + actor.getAwards());
+                    Director director = DirectorController.getInstance().searchDirector(id_numeric);
+                    displayMessage("ID: " + director.getId() + "\n" + "Nombre: " + director.getName() + "\n" + "Cantidad de premios: " + director.getAwards());
 
 
                 } else {
@@ -148,42 +170,37 @@ public class DirectorWindow extends JFrame {
             //First of all, will verify that we have
             if (utilities.isNumeric((txtID.getText()))) {
 
-                List<Actor> actorsAux = PrincipalController.getInstance().getCinema().getActors();
+                List<Director> directorsAux = PrincipalController.getInstance().getCinema().getDirectors();
 
                 String id = txtID.getText();
                 //The next line will save the current table model
 
                 //Proceed to edit the current table model deleting all the current rows
                 DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
-                for (int i = 0; i < actorsAux.size(); i++) {
+                for (int i = 0; i < directorsAux.size(); i++) {
                     model.removeRow(0);
                 }
-
                 //Search for any coincidence in the Actors List
-
-
-                for (Actor aux : actorsAux) {
+                for (Director aux : directorsAux) {
                     String str_id = String.valueOf(aux.getId());
 
                     //Verify if the current Actor id starts with the provided id
                     if (str_id.startsWith(id)) {
-                        int actor_id = aux.getId();
-                        String actor_name = aux.getName();
-                        int actor_awards = aux.getAwards();
+                        int director_id = aux.getId();
+                        String director_name = aux.getName();
+                        int director_awards = aux.getAwards();
 
-                        String[] actorToAdd = {String.valueOf(actor_id), actor_name, String.valueOf(actor_awards)};
+                        String[] directorToAdd = {String.valueOf(director_id), director_name, String.valueOf(director_awards)};
 
-                        model.addRow(actorToAdd);
+                        model.addRow(directorToAdd);
                     }
                 }
-
                 //If there is any coincidence an error message will appear
                 if (model.getRowCount() < 1) {
                     displayErrorMessage("No hay coincidencias para listar.");
                 }
                 //Finally the data model is edited
                 else {
-
                     dataTable.setModel(model);
                 }
             }
@@ -200,10 +217,10 @@ public class DirectorWindow extends JFrame {
                 int id_numeric = Integer.parseInt(id);
 
 
-                if (ActorController.getInstance().searchActor(id_numeric) != null) {
+                if (DirectorController.getInstance().searchDirector(id_numeric) != null) {
 
-                    Actor actor = ActorController.getInstance().searchActor(id_numeric);
-                    int pos = ActorController.getInstance().getActorPos(id_numeric);
+                    Director director = DirectorController.getInstance().searchDirector(id_numeric);
+                    int pos = DirectorController.getInstance().getDirectorPos(id_numeric);
 
                     DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
 

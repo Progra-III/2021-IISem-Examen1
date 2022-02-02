@@ -49,6 +49,7 @@ public class ActorWindow extends JFrame {
     public void init() {
 
         createTable();
+        loadData();
 
         AddButtonListener addListener = new AddButtonListener();
         btnAdd.addActionListener(addListener);
@@ -72,6 +73,23 @@ public class ActorWindow extends JFrame {
                 null,
                 new String[]{"Id", "Nombre", "Premios"}
         ));
+
+    }
+
+    public void loadData() {
+        if (!PrincipalController.getInstance().getCinema().getActors().isEmpty()) {
+            List<Actor> actors = PrincipalController.getInstance().getCinema().getActors();
+            DefaultTableModel actorsModel = (DefaultTableModel) dataTable.getModel();
+
+            for (Actor actor : actors) {
+                String[] actorStr = {String.valueOf(actor.getId()), actor.getName(), String.valueOf(actor.getAwards())};
+                actorsModel.addRow(actorStr);
+            }
+
+            dataTable.setModel(actorsModel);
+        } else {
+            System.out.println("Any data to load");
+        }
     }
 
     public void displayErrorMessage(String errorMessage) {
@@ -216,8 +234,6 @@ public class ActorWindow extends JFrame {
 
 
                 if (ActorController.getInstance().searchActor(id_numeric) != null) {
-
-                    Actor actor = ActorController.getInstance().searchActor(id_numeric);
                     int pos = ActorController.getInstance().getActorPos(id_numeric);
 
                     DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
