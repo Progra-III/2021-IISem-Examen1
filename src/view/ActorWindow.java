@@ -6,14 +6,9 @@ import model.Actor;
 import utilities.Utilities;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.EventObject;
 import java.util.List;
 
 public class ActorWindow extends JFrame {
@@ -42,7 +37,9 @@ public class ActorWindow extends JFrame {
         setContentPane(windowPanel);
         setTitle("Administrador Actores");
         setSize(900, 500);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -52,7 +49,6 @@ public class ActorWindow extends JFrame {
     public void init() {
 
         createTable();
-
 
         AddButtonListener addListener = new AddButtonListener();
         btnAdd.addActionListener(addListener);
@@ -76,8 +72,6 @@ public class ActorWindow extends JFrame {
                 null,
                 new String[]{"Id", "Nombre", "Premios"}
         ));
-
-
     }
 
     public void displayErrorMessage(String errorMessage) {
@@ -152,9 +146,11 @@ public class ActorWindow extends JFrame {
 
 
                 } else {
+                    //No actor with this id
                     displayErrorMessage("Sin coincidencia.");
                 }
             } else {
+                //Invalid input
                 displayErrorMessage("No hay valores numericos en ID o está vacío.");
             }
 
@@ -241,11 +237,7 @@ public class ActorWindow extends JFrame {
                 } else {
                     displayErrorMessage("Este id no coincide con ninguno de los existentes.");
                 }
-
-
             }
-
-
         }
     }
 
