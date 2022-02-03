@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class ActorController {
     //-------------------------------
-    private Utilities utilities;
+
 
     //-------------------------------
 

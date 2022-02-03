@@ -35,7 +35,9 @@ public class MoviesWindow extends JFrame {
         setContentPane(windowPanel);
         setTitle("Administrador de Peliculas");
         setSize(900, 500);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -118,6 +120,8 @@ public class MoviesWindow extends JFrame {
                         int id = Integer.parseInt(txtId.getText());
 
                         Movie movie = new Movie(id, txtName.getText(), director, actor);
+
+                        MoviesController.getInstance();
 
                         if (MoviesController.getInstance().addMovie(movie)) {
 

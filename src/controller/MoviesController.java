@@ -6,18 +6,6 @@ import utilities.Utilities;
 import view.MoviesWindow;
 
 public class MoviesController {
-    //-------------------------------
-    private static MoviesController instance;
-    private MoviesWindow cinemaWindow;
-    private Utilities utilities;
-
-    //-------------------------------
-
-    public MoviesController() {
-
-        this.cinemaWindow = new MoviesWindow();
-        this.cinemaWindow.setVisible(true);
-    }
 
     public boolean addMovie(Movie movie) {
         Cinema cinema = PrincipalController.getInstance().getCinema();
@@ -45,5 +33,6 @@ public class MoviesController {
         return instance;
     }
 
+    private static MoviesController instance;
 
 }
