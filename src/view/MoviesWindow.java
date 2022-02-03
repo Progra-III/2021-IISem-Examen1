@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesWindow extends JFrame {
@@ -106,9 +107,6 @@ public class MoviesWindow extends JFrame {
 
                 DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
 
-                String[] row = {txtId.getText(), txtName.getText(), comboDirector.getSelectedItem().toString(), comboActor.getSelectedItem().toString()};
-                model.addRow(row);
-                dataTable.setModel(model);
 
                 String actorName = comboActor.getSelectedItem().toString();
                 String directorName = comboDirector.getSelectedItem().toString();
@@ -125,6 +123,9 @@ public class MoviesWindow extends JFrame {
 
                         if (MoviesController.getInstance().addMovie(movie)) {
 
+                            String[] row = {txtId.getText(), txtName.getText(), comboDirector.getSelectedItem().toString(), comboActor.getSelectedItem().toString()};
+                            model.addRow(row);
+                            dataTable.setModel(model);
                             displayMessage("Pelicula agregada con exito.");
                         } else {
                             displayErrorMessage("La pelicula no pudo agregarse.");
@@ -146,10 +147,10 @@ public class MoviesWindow extends JFrame {
                 if (MoviesController.getInstance().searchMovie(id) != null) {
 
                     Movie movie = MoviesController.getInstance().searchMovie(id);
-                    displayMessage("ID: " + movie.getId() + "\n" + "Nombre: " + movie.getName() + "\n" + "" + "\n");
+                    displayMessage("ID: " + movie.getId() + "\n" + "Nombre: " + movie.getName() + "\n" + "Director: " + movie.getDirector().getName() + "\n" + movie.getActor().getName());
 
                 } else {
-
+                    displayErrorMessage("No existen coincidencias con este id");
                 }
             }
         }
@@ -159,6 +160,27 @@ public class MoviesWindow extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            if (utilities.isNumeric(txtId.getText())) {
+                ArrayList<Movie> movies = MoviesController.getInstance().searchStartsWith(txtId.getText());
+
+                if (!movies.isEmpty()) {
+                    DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+                    for (int i = 0; i < PrincipalController.getInstance().getCinema().getMovies().size(); i++) {
+                        model.removeRow(0);
+                    }
+
+                    String[] movieStr;
+                    for (Movie movie : movies) {
+                        movieStr = new String[]{String.valueOf(movie.getId()), movie.getName(), movie.getDirector().getName(), movie.getActor().getName()};
+                        model.addRow(movieStr);
+                    }
+
+                    dataTable.setModel(model);
+                } else {
+                    displayErrorMessage("No hay coincidencias.");
+                }
+            }
         }
     }
 
