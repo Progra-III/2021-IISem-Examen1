@@ -1,5 +1,6 @@
 package controller;
 
+import model.Actor;
 import model.Cinema;
 import model.Director;
 import utilities.Utilities;
@@ -41,6 +42,17 @@ public class DirectorController {
                 }
             }
             return null;
+        }
+        return null;
+    }
+
+    public Director getDirectorByName(String name) {
+        Cinema cinema = PrincipalController.getInstance().getCinema();
+
+        for (Director director : cinema.getDirectors()) {
+            if (director.getName() == name) {
+                return director;
+            }
         }
         return null;
     }

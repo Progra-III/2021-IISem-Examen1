@@ -1,15 +1,18 @@
 package view;
 
+import controller.ActorController;
+import controller.DirectorController;
+import model.Movie;
+import controller.MoviesController;
 import controller.PrincipalController;
 import model.Actor;
 import model.Director;
-import model.Movie;
+import utilities.Utilities;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesWindow extends JFrame {
@@ -25,6 +28,8 @@ public class MoviesWindow extends JFrame {
     private JButton btnUpdate;
     private JButton btnExit;
 
+    Utilities utilities = new Utilities();
+
     public MoviesWindow() {
 
         setContentPane(windowPanel);
@@ -39,13 +44,10 @@ public class MoviesWindow extends JFrame {
 
     public void createTable() {
         Object data[][] = {
-                {14, "Good Fellas", 2.5, "Martin Scorcese", "Jeff Goldblum"},
-                {},
-                {}
         };
         dataTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"Id", "Nombre", "Duracion", "Director", "Actor Principal"}
+                new String[]{"Id", "Nombre", "Director", "Actor Principal"}
         ));
     }
 
@@ -98,15 +100,54 @@ public class MoviesWindow extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (utilities.isNumeric(txtId.getText())) {
+
+                DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+                String[] row = {txtId.getText(), txtName.getText(), comboDirector.getSelectedItem().toString(), comboActor.getSelectedItem().toString()};
+                model.addRow(row);
+                dataTable.setModel(model);
+
+                String actorName = comboActor.getSelectedItem().toString();
+                String directorName = comboDirector.getSelectedItem().toString();
+
+                if (ActorController.getInstance().getActorByName(actorName) != null) {
+                    if (DirectorController.getInstance().getDirectorByName(directorName) != null) {
+                        Actor actor = ActorController.getInstance().getActorByName(actorName);
+                        Director director = DirectorController.getInstance().getDirectorByName(directorName);
+                        int id = Integer.parseInt(txtId.getText());
+
+                        Movie movie = new Movie(id, txtName.getText(), director, actor);
+
+                        if (MoviesController.getInstance().addMovie(movie)) {
+
+                            displayMessage("Pelicula agregada con exito.");
+                        } else {
+                            displayErrorMessage("La pelicula no pudo agregarse.");
+                        }
+                    }
+                }
 
 
+            }
         }
     }
 
     private class SearchButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (utilities.isNumeric(txtId.getText())) {
+                int id = Integer.parseInt(txtId.getText());
 
+                if (MoviesController.getInstance().searchMovie(id) != null) {
+
+                    Movie movie = MoviesController.getInstance().searchMovie(id);
+                    displayMessage("ID: " + movie.getId() + "\n" + "Nombre: " + movie.getName() + "\n" + "" + "\n");
+
+                } else {
+
+                }
+            }
         }
     }
 

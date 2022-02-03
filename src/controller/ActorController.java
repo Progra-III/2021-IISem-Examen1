@@ -27,6 +27,17 @@ public class ActorController {
         }
     }
 
+    public Actor getActorByName(String name) {
+        Cinema cinema = PrincipalController.getInstance().getCinema();
+
+        for (Actor actor : cinema.getActors()) {
+            if (actor.getName() == name) {
+                return actor;
+            }
+        }
+        return null;
+    }
+
     public int getActorPos(int id) {
 
         Cinema cinema = PrincipalController.getInstance().getCinema();

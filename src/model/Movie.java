@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class Movie {
 
-    public Movie(int id, String name, Director director, List<Actor> actors) {
+    public Movie(int id, String name, Director director, Actor actor) {
         this.id = id;
         this.name = name;
         this.director = director;
-        this.actors = actors;
+        this.actor = actor;
     }
 
     public int getId() {
@@ -36,16 +36,16 @@ public class Movie {
         this.director = director;
     }
 
-    public List<Actor> getActors() {
-        return actors;
+    public Actor getActor() {
+        return actor;
     }
 
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     private int id;
     private String name;
     Director director;
-    List<Actor> actors;
+    Actor actor;
 }
