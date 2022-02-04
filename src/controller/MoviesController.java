@@ -46,6 +46,19 @@ public class MoviesController {
         return movies;
     }
 
+    public int getMoviePos(int id) {
+
+        Cinema cinema = PrincipalController.getInstance().getCinema();
+        List<Movie> movies = cinema.getMovies();
+
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getId() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static MoviesController getInstance() {
         if (instance == null) {
             return new MoviesController();

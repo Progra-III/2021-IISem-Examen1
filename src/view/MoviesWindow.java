@@ -187,6 +187,54 @@ public class MoviesWindow extends JFrame {
     private class UpdateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (utilities.isNumeric(txtId.getText())) {
+
+                if (MoviesController.getInstance().searchMovie(Integer.parseInt(txtId.getText())) != null) {
+                    Movie movie = MoviesController.getInstance().searchMovie(Integer.parseInt(txtId.getText()));
+
+                    Director director = new Director();
+                    Actor actor = new Actor();
+
+                    movie.setName(txtName.getText());
+
+                    String directorStr = comboDirector.getSelectedItem().toString();
+
+                    if (DirectorController.getInstance().getDirectorByName(directorStr) != null) {
+                        director = DirectorController.getInstance().getDirectorByName(directorStr);
+                        movie.setDirector(director);
+                    }
+
+                    String actorStr = comboActor.getSelectedItem().toString();
+
+                    if (ActorController.getInstance().getActorByName(actorStr) != null) {
+                        actor = ActorController.getInstance().getActorByName(actorStr);
+                        movie.setActor(actor);
+                    }
+
+                    DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+                    int pos = MoviesController.getInstance().getMoviePos(Integer.parseInt(txtId.getText()));
+
+
+                    model.setValueAt(movie.getName(), pos, 1);
+
+                    if (actor.getName() != "") {
+                        model.setValueAt(director.getName(), pos, 2);
+                    }
+                    if (actor.getName() != "") {
+                        model.setValueAt(actor.getName(), pos, 3);
+                    }
+
+
+                } else {
+                    displayErrorMessage("Esta pelicula no está registrada.");
+                }
+
+
+            } else {
+                displayErrorMessage("Id invalido");
+            }
+
 
         }
     }
